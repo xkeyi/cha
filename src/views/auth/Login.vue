@@ -1,17 +1,21 @@
 <template>
-  <div class="wrap">
-    <router-view />
+  <div>
+    Login
   </div>
 </template>
 
 <script>
-
 export default {
-  name: 'app',
+  name: 'Login',
   components: {
+  },
+  data() {
+    return {
+    }
   }
 }
 </script>
 
-<style>
+<style scoped>
+
 </style>

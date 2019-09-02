@@ -1,17 +1,21 @@
 <template>
-  <div class="wrap">
-    <router-view />
+  <div>
+    Register
   </div>
 </template>
 
 <script>
-
 export default {
-  name: 'app',
+  name: 'Register',
   components: {
+  },
+  data() {
+    return {
+    }
   }
 }
 </script>
 
-<style>
+<style scoped>
+
 </style>
