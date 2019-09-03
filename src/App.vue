@@ -22,7 +22,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
   html {
     position: relative;
     min-height: 100%;
@@ -31,7 +31,8 @@ export default {
     height: 100%;
     margin: 0;
     padding: 0;
-    background-color: #eef0f3;
+    background-color: #eef0f3 !important;
+    font-size: 14px;
   }
   #wrap {
     position: relative;

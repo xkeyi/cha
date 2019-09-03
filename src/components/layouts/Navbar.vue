@@ -1,52 +1,51 @@
 <template>
   <div class="topnav">
     <div class="container">
-      <Menu mode="horizontal" active-name="1" style="padding-top: 5px;">
-        <div class="header-logo"></div>
-        <div class="header-nav">
-            <MenuItem name="1">
-                <Icon type="ios-home" size="16" />
-                全部
-            </MenuItem>
-            <MenuItem name="2">
-                <Icon type="ios-bulb" size="16" />
-                技术
-            </MenuItem>
-            <MenuItem name="3">
-                <Icon type="ios-body" size="16" />
-                健身
-            </MenuItem>
-            <MenuItem name="4">
-                <Icon type="ios-brush" size="16" />
-                其他
-            </MenuItem>
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="#">The Cha</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">首页</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">技术</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">健身</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">其他</a>
+            </li>
+          </ul>
+
+          <!-- Right Side Of Navbar -->
+          <ul class="navbar-nav navbar-right">
+            <!-- 登录注册链接开始 -->
+
+            <!-- <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">登录</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">注册</a></li> -->
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img src="https://i.loli.net/2017/08/21/599a521472424.jpg" class="img-fluid rounded-circle navbar-avatar"><span class="badge badge-danger nabvar-notification-count">2</span>
+                梁伦忠
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a href="" class="dropdown-item"><i class="fa fa-envelope fa-fw mr-2"></i> 我的消息 <span class="badge badge-danger">2</span></a>
+                <a href="" class="dropdown-item"><i class="fa fa-heart fa-fw mr-2"></i> 我的收藏</a>
+                <a href="" class="dropdown-item"><i class="fa fa-user fa-fw mr-2"></i> 个人中心</a>
+                <a href="" class="dropdown-item"><i class="fa fa-cogs fa-fw mr-2"></i> 编辑资料</a>
+                <a href="" class="dropdown-item"><i class="fa fa-sign-out fa-fw mr-2"></i> 退出</a>
+              </div>
+            </li>
+          </ul>
         </div>
-        <div class="header-nav float-right">
-          <Submenu name="6">
-            <template slot="title">
-              <Badge :count="1" class="avatar-badge-count">
-                <img class="avatar" src="https://i.loli.net/2017/08/21/599a521472424.jpg"/>
-              </Badge>
-              <span class="auth-name">foobar</span>
-            </template>
-            <MenuItem name="6-1">
-              <Icon type="ios-mail" size="16" /> 我的消息 <Badge :count="1" class="mail-badge-count"></Badge>
-            </MenuItem>
-            <MenuItem name="6-2">
-              <Icon type="ios-heart" size="16" /> 我的收藏
-            </MenuItem>
-            <MenuItem name="6-3">
-              <Icon type="ios-person" size="16" /> 个人中心
-            </MenuItem>
-            <MenuItem name="6-3">
-              <Icon type="ios-settings" size="16" /> 编辑资料
-            </MenuItem>
-            <MenuItem name="6-3">
-              <Icon type="md-log-out" size="16" /> 退出
-            </MenuItem>
-          </Submenu>
-        </div>
-      </Menu>
+      </nav>
     </div>
   </div>
 </template>
@@ -57,35 +56,27 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
   .topnav {
     background-color: #fff;
     box-shadow: 0 1px 11px 2px rgba(42,42,42,.1);
   }
-  .ivu-menu-light.ivu-menu-horizontal .ivu-menu-item, .ivu-menu-light.ivu-menu-horizontal .ivu-menu-submenu {
-    height: 55px;
-  }
-  .ivu-menu-horizontal.ivu-menu-light:after {
-    height: 0px;
-  }
-  .avatar {
+  .navbar-avatar {
     width: 30px;
     height: 30px;
-    margin-top: -25px;
+  }
+  .nabvar-notification-count {
+    width: 20px;
+    line-height: 20px;
+    margin-left: -10px;
+    margin-top: -10px;
+    vertical-align: top;
+    height: 20px;
+    padding: 0px;
     border-radius: 50%;
   }
-  .avatar-badge-count {
-    height:40px;
-    vertical-align:middle;
-    display:inline-block;
-    margin-right: 8px;
-  }
-  .mail-badge-count {
-    margin-left: 3px;
-    height: 16px;
-    min-width: 16px;
-    line-height: 16px;
-    text-align: center;
-    border-radius: 8px;
+  .dropdown-item {
+    color: #777;
+    padding: 0.82rem 1.5rem;
   }
 </style>
