@@ -27,10 +27,13 @@
           <ul class="navbar-nav navbar-right">
             <!-- 登录注册链接开始 -->
 
-            <!-- <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">登录</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">注册</a></li> -->
-
-            <li class="nav-item dropdown">
+            <li class="nav-item">
+              <router-link :to="{ name: 'auth.login' }" class="nav-link">登录</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link :to="{ name: 'auth.register' }" class="nav-link">注册</router-link>
+            </li>
+            <!-- <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <img src="https://i.loli.net/2017/08/21/599a521472424.jpg" class="img-fluid rounded-circle navbar-avatar"><span class="badge badge-danger nabvar-notification-count">2</span>
                 梁伦忠
@@ -42,7 +45,7 @@
                 <a href="" class="dropdown-item"><i class="fa fa-cogs fa-fw mr-2"></i> 编辑资料</a>
                 <a href="" class="dropdown-item"><i class="fa fa-sign-out fa-fw mr-2"></i> 退出</a>
               </div>
-            </li>
+            </li> -->
           </ul>
         </div>
       </nav>
