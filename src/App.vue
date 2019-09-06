@@ -2,7 +2,7 @@
   <div class="wrap">
     <navbar />
 
-    <div class="container main-content">
+    <div class="container main-content mt-3">
       <router-view />
     </div>
     

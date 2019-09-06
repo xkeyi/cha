@@ -9,9 +9,9 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">首页</a>
-            </li>
+            <router-link :to="{ name: 'home' }" class="nav-item">
+              <a class="nav-link" href="javascript:void(0);">首页</a>
+            </router-link>
             <li class="nav-item">
               <a class="nav-link" href="#">技术</a>
             </li>
@@ -25,27 +25,29 @@
 
           <!-- Right Side Of Navbar -->
           <ul class="navbar-nav navbar-right">
-            <!-- 登录注册链接开始 -->
-
-            <li class="nav-item">
-              <router-link :to="{ name: 'auth.login' }" class="nav-link">登录</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link :to="{ name: 'auth.register' }" class="nav-link">注册</router-link>
-            </li>
-            <!-- <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img src="https://i.loli.net/2017/08/21/599a521472424.jpg" class="img-fluid rounded-circle navbar-avatar"><span class="badge badge-danger nabvar-notification-count">2</span>
-                梁伦忠
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a href="" class="dropdown-item"><i class="fa fa-envelope fa-fw mr-2"></i> 我的消息 <span class="badge badge-danger">2</span></a>
-                <a href="" class="dropdown-item"><i class="fa fa-heart fa-fw mr-2"></i> 我的收藏</a>
-                <a href="" class="dropdown-item"><i class="fa fa-user fa-fw mr-2"></i> 个人中心</a>
-                <a href="" class="dropdown-item"><i class="fa fa-cogs fa-fw mr-2"></i> 编辑资料</a>
-                <a href="" class="dropdown-item"><i class="fa fa-sign-out fa-fw mr-2"></i> 退出</a>
-              </div>
-            </li> -->
+            <template v-if="isLogged">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <img src="https://i.loli.net/2017/08/21/599a521472424.jpg" class="img-fluid rounded-circle navbar-avatar"><span class="badge badge-danger nabvar-notification-count">2</span>
+                  {{ currentUser.username }}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a href="" class="dropdown-item"><i class="fa fa-envelope fa-fw mr-2"></i> 我的消息 <span class="badge badge-danger">2</span></a>
+                  <a href="" class="dropdown-item"><i class="fa fa-heart fa-fw mr-2"></i> 我的收藏</a>
+                  <a href="" class="dropdown-item"><i class="fa fa-user fa-fw mr-2"></i> 个人中心</a>
+                  <a href="" class="dropdown-item"><i class="fa fa-cogs fa-fw mr-2"></i> 编辑资料</a>
+                  <a href="" class="dropdown-item"><i class="fa fa-sign-out fa-fw mr-2"></i> 退出</a>
+                </div>
+              </li>
+            </template>
+            <template v-else>
+              <li class="nav-item">
+                <router-link :to="{ name: 'auth.login' }" class="nav-link">登录</router-link>
+              </li>
+              <li class="nav-item">
+                <router-link :to="{ name: 'auth.register' }" class="nav-link">注册</router-link>
+              </li>
+            </template>
           </ul>
         </div>
       </nav>
@@ -54,8 +56,13 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
-  name: 'Navbar'
+  name: 'Navbar',
+  computed: {
+    ...mapGetters(['isLogged', 'currentUser'])
+  }
 }
 </script>
 
