@@ -2,7 +2,9 @@
   <div class="topnav">
     <div class="container">
       <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="#">The Cha</a>
+        <router-link :to="{ name: 'home' }" class="nav-item">
+          <a class="navbar-brand" href="javascript:void(0);">The Cha</a>
+        </router-link>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -12,15 +14,15 @@
             <router-link :to="{ name: 'home' }" class="nav-item">
               <a class="nav-link" href="javascript:void(0);">首页</a>
             </router-link>
-            <li class="nav-item">
-              <a class="nav-link" href="#">编程</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">健身</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">其他</a>
-            </li>
+            <router-link :to="{ name: 'category', params: { categoryId: 1 }}" class="nav-item">
+              <a class="nav-link" href="javascript:void(0);">编程</a>
+            </router-link>
+            <router-link :to="{ name: 'category', params: { categoryId: 2 } }" class="nav-item">
+              <a class="nav-link" href="javascript:void(0);">健身</a>
+            </router-link>
+            <router-link :to="{ name: 'category', params: { categoryId: 3 } }" class="nav-item">
+              <a class="nav-link" href="javascript:void(0);">其他</a>
+            </router-link>
           </ul>
 
           <!-- Right Side Of Navbar -->
