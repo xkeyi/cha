@@ -13,7 +13,7 @@
               <a class="nav-link" href="javascript:void(0);">首页</a>
             </router-link>
             <li class="nav-item">
-              <a class="nav-link" href="#">技术</a>
+              <a class="nav-link" href="#">编程</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">健身</a>
@@ -36,7 +36,7 @@
                   <a href="" class="dropdown-item"><i class="fa fa-heart fa-fw mr-2"></i> 我的收藏</a>
                   <a href="" class="dropdown-item"><i class="fa fa-user fa-fw mr-2"></i> 个人中心</a>
                   <a href="" class="dropdown-item"><i class="fa fa-cogs fa-fw mr-2"></i> 编辑资料</a>
-                  <a href="" class="dropdown-item"><i class="fa fa-sign-out fa-fw mr-2"></i> 退出</a>
+                  <a href="javascript:void(0);" @click="confirmLogout" class="dropdown-item"><i class="fa fa-sign-out fa-fw mr-2"></i> 退出</a>
                 </div>
               </li>
             </template>
@@ -62,6 +62,21 @@ export default {
   name: 'Navbar',
   computed: {
     ...mapGetters(['isLogged', 'currentUser'])
+  },
+  methods: {
+    ...mapActions(['logout']),
+    confirmLogout() {
+      this.$confirm('您确定要退出登录吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true
+      }).then(() => {
+        this.logout()
+      }).catch(() => {
+        // 取消
+      });
+    }
   }
 }
 </script>

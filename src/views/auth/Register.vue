@@ -64,7 +64,7 @@
       </div>
     </div>
 
-    <div class="offset-sm-3 col-sm-6 text-center mt-2">
+    <div class="offset-sm-4 col-sm-4 text-center mt-2">
       <p>已有账号？<router-link :to="{ name: 'auth.login' }">直接登录</router-link></p>
     </div>
 
@@ -96,7 +96,6 @@
         <el-button type="primary" @click="sendVerificationCode" class="">确 定</el-button>
       </span>
     </el-dialog>
-
   </div>
 </template>
 <script>
@@ -191,12 +190,23 @@ export default {
       this.getCaptcha()
     },
     async getCaptcha () {
-      await this.$http
-          .post('/captchas', { phone: this.phone })
-          .then(response => {
-            this.captchaDialogVisiable = true
-            this.captcha = response
-          })
+      const loading = this.$loading.service()
+
+      try {
+        await this.$http
+            .post('/captchas', { phone: this.phone })
+            .then(response => {
+              this.captchaDialogVisiable = true
+              this.captcha = response
+            })
+      } catch (e) {
+        console.log(e)
+      }
+
+      this.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
+        loading.close();
+      });
+
     },
     async sendVerificationCode () {
       if (!this.captcha.captcha_key) {

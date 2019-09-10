@@ -1,10 +1,12 @@
 import http from '@/utils/http'
+import localforage from 'localforage'
+import { isEmpty } from 'lodash'
 
 export const register = ({ dispatch }, payload) => {
   http.post('/users', payload)
       .then(response => {
-        console.log(response.access_token)
         dispatch('setToken', response.access_token)
+
         return Promise.resolve()
       })
       .then(() => {
@@ -34,5 +36,27 @@ export const loadUser = ({ dispatch }) => {
       .catch(() => {
         // 退出登录
         console.log('获取当前用户失败了')
+        logout()
       })
 }
+
+export const login = ({ dispatch }, payload) => {
+  http.post('/authorizations', payload)
+      .then(response => {
+        dispatch('setToken', response.access_token)
+
+        return Promise.resolve()
+      })
+      .then(() => {
+        dispatch('loadUser')
+      })
+}
+
+export const logout = ({ dispatch }) => {
+  return localforage
+    .removeItem('cha-vue-store-token')
+    .then(dispatch('setToken', null))
+    .then(dispatch('setUser', {}))
+}
+
+
