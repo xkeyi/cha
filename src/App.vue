@@ -2,10 +2,10 @@
   <div class="wrap">
     <navbar />
 
-    <div class="container main-content mt-3">
+    <div class="container main-content mt-4">
       <router-view />
     </div>
-    
+
     <foobar />
   </div>
 </template>

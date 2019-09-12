@@ -1,5 +1,5 @@
 <template>
-  <div class="row pt-3">
+  <div class="row">
     <div class="offset-sm-4 col-sm-4">
       <div class="box">
         <h4 class="text-center font-weight-normal mt-2 mb-4">用户注册</h4>

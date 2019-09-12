@@ -85,6 +85,7 @@ export default {
 
 <style scoped lang="scss">
   .topnav {
+    border-top: 3px solid #f4645f;
     background-color: #fff;
     box-shadow: 0 1px 11px 2px rgba(42,42,42,.1);
   }
