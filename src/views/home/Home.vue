@@ -40,22 +40,25 @@
         </div>
       </div>
 
-      <div class="col-md-10">
-        <div class="pagination">这是分页</div>
+      <div class="col-md-12 mb-5">
+        <paginator :meta="meta" @change="handleChange"></paginator>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Paginator from '@/components/paginator'
+
 export default {
   name: 'Home',
   components: {
+    Paginator
   },
   data () {
     return {
       articles: [],
-      paginator: {},
+      meta: {},
       categoryId: undefined,
     }
   },
@@ -82,18 +85,22 @@ export default {
     this.getArticles()
   },
   methods: {
-    async getArticles () {
+    async getArticles (page = 1) {
       let category_id = this.categoryId
       if (category_id == undefined || category_id == 'undefined') {
         category_id = 0
       }
 
-      await this.$http.get('/articles?category_id='+category_id+'&include=user,category,tags,content')
+      await this.$http.get('/articles?category_id='+category_id+'&include=user,category,tags,content&page='+page)
         .then(response => {
           console.log(response)
           this.articles = response.data
-          this.paginator = response.meta.pagination
+          this.meta = response.meta.pagination
+          console.log(this.meta)
         })
+    },
+    handleChange (page) {
+      this.getArticles(page)
     }
   }
 }
