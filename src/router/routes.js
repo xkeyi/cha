@@ -23,5 +23,10 @@ export default [
     path: '/auth/login',
     name: 'auth.login',
     component: () => import('@/views/auth/Login')
+  },
+  {
+    path: '/article/:articleId/show',
+    name: 'article.show',
+    component: () => import('@/views/articles/Show')
   }
 ]

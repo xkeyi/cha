@@ -10,7 +10,11 @@
             >
               <img class="align-self-center mr-3 article-cover-image" :src="article.cover_image">
               <div class="media-body">
-                <h5 class="article-title mt-0 mb-1">{{ article.title }}</h5>
+                <h5 class="article-title mt-0 mb-1">
+                  <router-link :to="{ name: 'article.show', params: { articleId: article.id }}">
+                    {{ article.title }}
+                  </router-link>
+                </h5>
                 <div class="meta mt-1 mb-1">
                   <a href="javascript:void(0);" class="badge badge-secondary">{{ article.category.name }}</a>
                   <span class="badge-divider" v-if="article.tags.data.length > 0">|</span>
@@ -48,7 +52,7 @@
 </template>
 
 <script>
-import Paginator from '@/components/paginator'
+import Paginator from '@/components/Paginator'
 
 export default {
   name: 'Home',
@@ -106,11 +110,6 @@ export default {
 }
 </script>
 <style scoped>
-  .page-home {
-    border-radio: 5px;
-    background-color: #fff;
-    box-shadow: 0 1px 11px 2px rgba(42,42,42,.1);
-  }
   .article-cover-image {
     width: 200px;
     height:auto;
@@ -131,5 +130,9 @@ export default {
   .count_seperator {
     margin: 0 10px;
     color: #bab9bb;
+  }
+  .article-title a {
+    color: #34495e;
+    font-weight: 400;
   }
 </style>

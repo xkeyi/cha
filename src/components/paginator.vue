@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: 'paginator',
+  name: 'Paginator',
   props: {
     meta: {
       type: Object,

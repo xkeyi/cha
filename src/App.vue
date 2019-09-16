@@ -43,4 +43,10 @@ export default {
     min-height: 100%;
     padding-bottom: 60px;
   }
+  .page-home {
+    min-height: 400px;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0 1px 11px 2px rgba(42,42,42,.1);
+  }
 </style>
