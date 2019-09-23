@@ -15,12 +15,14 @@
                     {{ article.title }}
                   </router-link>
                 </h5>
-                <div class="meta mt-1 mb-1">
-                  <a href="javascript:void(0);" class="badge badge-secondary">{{ article.category.name }}</a>
-                  <span class="badge-divider" v-if="article.tags.data.length > 0">|</span>
+                <div class="meta mt-2 mb-2">
+                  <router-link :to="{ name: 'category', params: { categoryId: article.category.id }}" class="badge badge-secondary">
+                  {{ article.category.name }}
+                  </router-link>
+                  <span class="count_seperator" v-if="article.tags.data.length > 0">|</span>
                   <span v-for="tag in article.tags.data"
                         :key="tag.id"
-                        class="badge mr-1"
+                        class="badge mr-2"
                         :class="tag.badge"
                   >{{ tag.name }}</span>
                 </div>
