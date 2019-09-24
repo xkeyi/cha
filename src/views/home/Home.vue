@@ -11,7 +11,7 @@
               <img class="align-self-center mr-3 article-cover-image" :src="article.cover_image">
               <div class="media-body">
                 <h5 class="article-title mt-0 mb-1">
-                  <router-link :to="{ name: 'article.show', params: { articleId: article.id }}">
+                  <router-link :to="{ name: 'articles.show', params: { articleId: article.id }}">
                     {{ article.title }}
                   </router-link>
                 </h5>
@@ -99,10 +99,8 @@ export default {
 
       await this.$http.get('/articles?category_id='+category_id+'&include=user,category,tags,content&page='+page)
         .then(response => {
-          console.log(response)
           this.articles = response.data
           this.meta = response.meta.pagination
-          console.log(this.meta)
         })
     },
     handleChange (page) {

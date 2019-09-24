@@ -11,6 +11,7 @@ import App from './App.vue'
 import router from './router'
 import http from './utils/http'
 import store from './vuex'
+import 'highlight.js/styles/paraiso-dark.css';
 
 Vue.config.productionTip = false
 
@@ -21,6 +22,9 @@ Vue.use(ElementUI);
 Vue.prototype.$message = Message
 Vue.prototype.$loading = Loading
 Vue.prototype.$http = http
+Vue.prototype.$user = () => {
+  return store.getters.currentUser
+}
 
 new Vue({
   store,

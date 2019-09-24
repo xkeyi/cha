@@ -28,6 +28,12 @@
           <!-- Right Side Of Navbar -->
           <ul class="navbar-nav navbar-right">
             <template v-if="isLogged">
+              <li class="nav-item" v-if="currentUser.is_admin">
+                <router-link :to="{ name: 'articles.create' }" class="create-article_btn">
+                  <i class="fa fa-plus"></i>
+                </router-link>
+              </li>
+
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <img src="https://i.loli.net/2017/08/21/599a521472424.jpg" class="img-fluid rounded-circle navbar-avatar"><span class="badge badge-danger nabvar-notification-count">2</span>
@@ -106,5 +112,16 @@ export default {
   .dropdown-item {
     color: #777;
     padding: 0.82rem 1.5rem;
+  }
+  a.create-article_btn {
+    color: #b3b3b3;
+    font-size: 18px;
+    margin-top: 5px;
+    display: block;
+    margin-right: 5px;
+    padding: 5px
+  }
+  a.create-article_btn:hover {
+    color: #212529;
   }
 </style>

@@ -36,7 +36,7 @@ export const loadUser = ({ dispatch }) => {
       .catch(() => {
         // 退出登录
         console.log('获取当前用户失败了')
-        logout()
+        dispatch('logout')
       })
 }
 
@@ -57,6 +57,33 @@ export const logout = ({ dispatch }) => {
     .removeItem('cha-vue-store-token')
     .then(dispatch('setToken', null))
     .then(dispatch('setUser', {}))
+}
+
+export const checkUserToken = ( {dispatch, state }) => {
+  // If the token exists then all validation has already been done
+  if (!isEmpty(state.token)) {
+    return Promise.resolve(state.token)
+  }
+
+  /**
+   * Token does not exist yet
+   * - Recover it from localstorage
+   * - Recover also the user, validating the token also
+   */
+  return (
+    localforage
+      .getItem('cha-vue-store-token')
+      .then(token => {
+        if (isEmpty(token)) {
+          // Token is not saved in localstorage
+          return Promise.reject('NO_TOKEN') // Reject promise
+        }
+        // Put the token in the vuex store
+        return dispatch('setToken', token) // keep promise chain
+      })
+      // With the token in hand, retrieves the user's data, validating the token
+      .then(() => dispatch('loadUser'))
+  )
 }
 
 

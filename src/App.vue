@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import Navbar from '@/components/layouts/Navbar'
-import Foobar from '@/components/layouts/Foobar'
+import Navbar from '@/components/Navbar'
+import Foobar from '@/components/Foobar'
 export default {
   name: 'app',
   components: {
@@ -45,6 +45,7 @@ export default {
   }
   .page-home {
     min-height: 400px;
+    margin-bottom: 20px;
     border-radius: 4px;
     background-color: #fff;
     box-shadow: 0 1px 11px 2px rgba(42,42,42,.1);

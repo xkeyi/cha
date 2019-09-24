@@ -11,7 +11,7 @@
 
             <span class="count_seperator">|</span>
             <template v-for="(tag, index) in article.tags.data">
-              <span><i class="fa fa-eye"></i> {{ tag.name }}</span>
+              <span><i class="fa fa-tag"></i> {{ tag.name }}</span>
               <span v-if="index != article.tags.data.length-1" class="count_seperator">/</span>
             </template>
 
