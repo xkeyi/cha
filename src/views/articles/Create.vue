@@ -7,17 +7,22 @@
           创作文章
         </h3>
         <hr>
-        <form>
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="标题">
-          </div>
-          <div class="form-group">
-            <textarea id="editor"></textarea>
-          </div>
-          <div class="form-group">
-            <button class="btn btn-primary" type="submit" @click="">发 布</button>
-          </div>
-        </form>
+        <template v-if="canEdit">
+          <form>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="标题">
+            </div>
+            <div class="form-group">
+              <textarea id="editor"></textarea>
+            </div>
+            <div class="form-group">
+              <button class="btn btn-primary" type="submit" @click="">发 布</button>
+            </div>
+          </form>
+        </template>
+        <template v-else>
+          <div class="text-center">您还没有权限创作文章哦！</div>
+        </template>
       </div>
     </div>
   </div>
@@ -27,6 +32,7 @@
 import SimpleMDE from 'simplemde'
 import hljs from 'highlight.js'
 import 'simplemde/dist/simplemde.min.css';
+import { mapGetters } from 'vuex'
 
 // 添加全局变量
 window.hljs = hljs
@@ -39,6 +45,11 @@ export default {
     }
   },
   components: {
+  },
+  computed: {
+    canEdit () {
+      return this.$user().is_admin
+    }
   },
   methods: {
   },
