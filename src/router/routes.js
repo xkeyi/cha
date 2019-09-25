@@ -28,7 +28,7 @@ export default [
     path: '/articles/create',
     name: 'articles.create',
     component: () => import('@/views/articles/Create'),
-    meta: { auth: true },
+    meta: { auth: true }
   },
   {
     path: '/articles/:articleId/show',

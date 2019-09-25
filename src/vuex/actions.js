@@ -3,7 +3,7 @@ import localforage from 'localforage'
 import { isEmpty } from 'lodash'
 
 export const register = ({ dispatch }, payload) => {
-  http.post('/users', payload)
+  return http.post('/users', payload)
       .then(response => {
         dispatch('setToken', response.access_token)
 
@@ -41,7 +41,7 @@ export const loadUser = ({ dispatch }) => {
 }
 
 export const login = ({ dispatch }, payload) => {
-  http.post('/authorizations', payload)
+  return http.post('/authorizations', payload)
       .then(response => {
         dispatch('setToken', response.access_token)
 
