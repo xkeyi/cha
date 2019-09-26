@@ -1,54 +1,50 @@
 <template>
-  <div class="page-home">
-    <div class="row">
-      <div class="offset-md-1 col-md-10">
-        <div class="article-list">
-          <ul class="list-unstyled">
-            <li class="media media-li"
-                v-for="article in articles"
-                :key="article.id"
-            >
-              <img class="align-self-center mr-3 article-cover-image" :src="article.cover_image">
-              <div class="media-body">
-                <h5 class="article-title mt-0 mb-1">
-                  <router-link :to="{ name: 'articles.show', params: { articleId: article.id }}">
-                    {{ article.title }}
-                  </router-link>
-                </h5>
-                <div class="meta mt-2 mb-2">
-                  <router-link :to="{ name: 'category', params: { categoryId: article.category.id }}" class="badge badge-secondary">
-                  {{ article.category.name }}
-                  </router-link>
-                  <el-divider direction="vertical" v-if="article.tags.data.length > 0"></el-divider>
-                  <span v-for="tag in article.tags.data"
-                        :key="tag.id"
-                        class="badge mr-2"
-                        :class="tag.badge"
-                  >{{ tag.name }}</span>
-                </div>
-                <div class="extra mt-1 mb-1">
-                  <span><i class="fa fa-heart"></i> 1</span>
-                  <span class="count_seperator">/</span>
-                  <span><i class="fa fa-eye"></i> 211</span>
-                  <el-divider direction="vertical"></el-divider>
-                  <span>{{ article.published_at_ago }}</span>
-                </div>
-                <div class="log-content mt-1" v-html="article.content.activity_log_content"></div>
-              </div>
-            </li>
+  <div class="offset-md-1 col-md-10 page-home">
+    <div class="article-list ml-5 mr-3">
+      <ul class="list-unstyled">
+        <li class="media media-li"
+            v-for="article in articles"
+            :key="article.id"
+        >
+          <img class="align-self-center mr-3 article-cover-image" :src="article.cover_image">
+          <div class="media-body">
+            <h5 class="article-title mt-0 mb-1">
+              <router-link :to="{ name: 'articles.show', params: { articleId: article.id }}">
+                {{ article.title }}
+              </router-link>
+            </h5>
+            <div class="meta mt-2 mb-2">
+              <router-link :to="{ name: 'category', params: { categoryId: article.category.id }}" class="badge badge-secondary">
+              {{ article.category.name }}
+              </router-link>
+              <el-divider direction="vertical" v-if="article.tags.data.length > 0"></el-divider>
+              <span v-for="tag in article.tags.data"
+                    :key="tag.id"
+                    class="badge mr-2"
+                    :class="tag.badge"
+              >{{ tag.name }}</span>
+            </div>
+            <div class="extra mt-1 mb-1">
+              <span><i class="fa fa-heart"></i> 1</span>
+              <span class="count_seperator">/</span>
+              <span><i class="fa fa-eye"></i> 211</span>
+              <el-divider direction="vertical"></el-divider>
+              <span>{{ article.published_at_ago }}</span>
+            </div>
+            <div class="log-content mt-1" v-html="article.content.activity_log_content"></div>
+          </div>
+        </li>
 
-            <li class="media media-li"
-                v-if="articles.length == 0"
-            >
-              该分类下无相关讨论哦~
-            </li>
-          </ul>
-        </div>
-      </div>
+        <li class="media media-li"
+            v-if="articles.length == 0"
+        >
+          该分类下无相关讨论哦~
+        </li>
+      </ul>
+    </div>
 
-      <div class="col-md-12 mb-5">
-        <paginator :meta="meta" @change="handleChange"></paginator>
-      </div>
+    <div class="col-md-12 mb-5">
+      <paginator :meta="meta" @change="handleChange"></paginator>
     </div>
   </div>
 </template>
@@ -113,6 +109,7 @@ export default {
   .article-cover-image {
     width: 200px;
     height:auto;
+    max-height: 150px;
   }
   .media-li {
     padding: 20px 0;

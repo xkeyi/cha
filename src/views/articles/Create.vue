@@ -1,39 +1,40 @@
 <template>
-  <div class="row justify-content-end">
-    <div class="col-11 page-home">
-      <div class="article-page">
-        <h3 class="text-center" style="font-weight: 400;color: #636b6f;">
-          <i class="fa fa-paint-brush"></i>
-          创作文章
-        </h3>
-        <hr>
-        <form v-show="canEdit">
-          <div class="form-group">
-            <select class="form-control" v-model="form.category_id">
-              <option disabled selected value="null">-- 分类 --</option>
-              <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <input type="text" class="form-control" v-model.trim="form.title" placeholder="标题">
-          </div>
-          <div class="form-group">
-            <textarea id="editor"></textarea>
-          </div>
+  <div class="offset-md-1 col-md-10 page-home">
+    <div class="article-page">
+      <h3 class="text-center" style="font-weight: 400;color: #636b6f;">
+        <i class="fa fa-paint-brush"></i>
+        创作文章
+      </h3>
+      <hr>
+      <form v-show="canEdit">
+        <div class="form-group">
+          <select class="form-control" v-model="form.category_id">
+            <option disabled selected value="null">-- 分类 --</option>
+            <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" v-model.trim="form.title" placeholder="标题">
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" v-model.trim="form.cover_image" placeholder="封面图">
+        </div>
+        <div class="form-group">
+          <textarea id="editor"></textarea>
+        </div>
 
-          <div v-for="tag in tags" :key="tag.id" class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" :value="tag.id" :id="'tagCheckbox'+tag.id" v-model="form.tags">
-            <label class="form-check-label" :for="'tagCheckbox'+tag.id">{{ tag.name }}</label>
-          </div>
-          <hr>
-          <div class="form-group">
-            <button type="button" class="btn btn-primary"  @click="submit(false)"><i class="fa fa-send mr-2"></i>立即发布</button>
-            <span class="mr-2 ml-2">or</span>
-            <button type="button" class="btn btn-secondary" :disabled="!formReady" @click="submit(true)"><i class="fa fa-save mr-2"></i>保存草稿</button>
-          </div>
-        </form>
-        <div v-show="!canEdit" class="text-center">您还没有权限创作文章哦！</div>
-      </div>
+        <div v-for="tag in tags" :key="tag.id" class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" :value="tag.id" :id="'tagCheckbox'+tag.id" v-model="form.tags">
+          <label class="form-check-label" :for="'tagCheckbox'+tag.id">{{ tag.name }}</label>
+        </div>
+        <hr>
+        <div class="form-group">
+          <button type="button" class="btn btn-primary"  @click="submit(false)"><i class="fa fa-send mr-2"></i>立即发布</button>
+          <span class="mr-2 ml-2">or</span>
+          <button type="button" class="btn btn-secondary" :disabled="!formReady" @click="submit(true)"><i class="fa fa-save mr-2"></i>保存草稿</button>
+        </div>
+      </form>
+      <div v-show="!canEdit" class="text-center">您还没有权限创作文章哦！</div>
     </div>
   </div>
 </template>
@@ -55,6 +56,7 @@ export default {
       busing: false,
       form: {
         category_id: null,
+        cover_image: '',
         is_draft: true, // 草稿
         type: 'markdown',
         title: '',
@@ -99,6 +101,7 @@ export default {
     formReady () {
       return (
         !this.busing &&
+        this.form.cover_image &&
         this.form.title.length >= 5 &&
         this.form.category_id > 0 &&
         this.form.content.markdown &&
@@ -123,6 +126,24 @@ export default {
     submit (is_draft = true) {
       this.form.is_draft = is_draft
 
+      this.busing = true
+
+      this.$http.post('/articles', this.form)
+        .then(response => {
+          this.$message.success('发布/保存成功！')
+          this.$router.replace({
+            name: 'articles.show',
+            params: { articleId: response.id }
+          })
+
+          // 清除编辑的内容
+          this.simplemde.value('')
+          // 清除编辑器自动保存的内容
+          this.simplemde.clearAutosavedValue()
+        })
+        .finally(() => {
+          this.busing = false
+        })
       console.log(this.form)
     }
   },
