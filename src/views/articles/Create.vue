@@ -22,14 +22,14 @@
           </div>
 
           <div v-for="tag in tags" :key="tag.id" class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" :value="tag.id" :id="'tagCheckbox'+tag.id">
+            <input class="form-check-input" type="checkbox" :value="tag.id" :id="'tagCheckbox'+tag.id" v-model="form.tags">
             <label class="form-check-label" :for="'tagCheckbox'+tag.id">{{ tag.name }}</label>
           </div>
           <hr>
           <div class="form-group">
-            <button type="button" class="btn btn-primary"><i class="fa fa-send mr-2"></i>立即发布</button>
+            <button type="button" class="btn btn-primary"  @click="submit(false)"><i class="fa fa-send mr-2"></i>立即发布</button>
             <span class="mr-2 ml-2">or</span>
-            <button type="button" class="btn btn-secondary"><i class="fa fa-save mr-2"></i>保存草稿</button>
+            <button type="button" class="btn btn-secondary" :disabled="!formReady" @click="submit(true)"><i class="fa fa-save mr-2"></i>保存草稿</button>
           </div>
         </form>
         <div v-show="!canEdit" class="text-center">您还没有权限创作文章哦！</div>
@@ -52,16 +52,31 @@ export default {
   data () {
     return {
       categories: [],
+      busing: false,
       form: {
         category_id: null,
         is_draft: true, // 草稿
+        type: 'markdown',
         title: '',
+        tags: [],
+        content: {
+          markdown: '',
+          body: ''
+        },
       }
     }
   },
   components: {
   },
+  watch: {
+    categoryId () {
+      this.form.tags = []
+    }
+  },
   computed: {
+    categoryId () {
+      return this.form.category_id
+    },
     canEdit () {
       return this.$user().is_admin
     },
@@ -80,14 +95,35 @@ export default {
       })
 
       return cTags
+    },
+    formReady () {
+      return (
+        !this.busing &&
+        this.form.title.length >= 5 &&
+        this.form.category_id > 0 &&
+        this.form.content.markdown &&
+        this.form.content.markdown.length >= 30
+      )
     }
   },
   methods: {
-   getTags () {
-      this.$http.get('/categories?include=tags')
+    getTags () {
+      this.busing = true
+
+      return this.$http
+        .get('/categories?include=tags')
         .then(response => {
           this.categories = response.data
+          this.busing = false
         })
+        .finally(() => {
+          this.busing = false
+        })
+    },
+    submit (is_draft = true) {
+      this.form.is_draft = is_draft
+
+      console.log(this.form)
     }
   },
   mounted () {
@@ -107,6 +143,18 @@ export default {
           codeSyntaxHighlighting: true
         }
       })
+
+      // 初始值
+      this.form.content.markdown = simplemde.value()
+
+      // 监听编辑器的 change 事件
+      simplemde.codemirror.on('change', () => {
+        // 将改变后的值赋给文章内容
+        this.form.content.markdown = simplemde.value()
+      })
+
+      // 将 simplemde 添加到当前实例，以在其他地方调用
+      this.simplemde = simplemde
     })
   }
 }
