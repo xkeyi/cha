@@ -19,7 +19,7 @@
                   <router-link :to="{ name: 'category', params: { categoryId: article.category.id }}" class="badge badge-secondary">
                   {{ article.category.name }}
                   </router-link>
-                  <span class="count_seperator" v-if="article.tags.data.length > 0">|</span>
+                  <el-divider direction="vertical" v-if="article.tags.data.length > 0"></el-divider>
                   <span v-for="tag in article.tags.data"
                         :key="tag.id"
                         class="badge mr-2"
@@ -30,7 +30,7 @@
                   <span><i class="fa fa-heart"></i> 1</span>
                   <span class="count_seperator">/</span>
                   <span><i class="fa fa-eye"></i> 211</span>
-                  <span class="count_seperator">|</span>
+                  <el-divider direction="vertical"></el-divider>
                   <span>{{ article.published_at_ago }}</span>
                 </div>
                 <div class="log-content mt-1" v-html="article.content.activity_log_content"></div>

@@ -7,36 +7,32 @@
           创作文章
         </h3>
         <hr>
-        <template v-if="canEdit">
-          <form>
-            <div class="form-group">
-              <select class="form-control">
-                <option disabled selected>-- 分类 --</option>
-                <option value="1">编程</option>
-                <option value="2">健身</option>
-                <option value="3">其他</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="标题">
-            </div>
-            <div class="form-group">
-              <textarea id="editor"></textarea>
-            </div>
+        <form v-show="canEdit">
+          <div class="form-group">
+            <select class="form-control" v-model="form.category_id">
+              <option disabled selected value="null">-- 分类 --</option>
+              <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" v-model.trim="form.title" placeholder="标题">
+          </div>
+          <div class="form-group">
+            <textarea id="editor"></textarea>
+          </div>
 
-            <div v-for="tag in tags" :key="tag.id" class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" :value="tag.id" :id="'tagCheckbox'+tag.id">
-              <label class="form-check-label" :for="'tagCheckbox'+tag.id">{{ tag.name }}</label>
-            </div>
-
-            <div class="form-group">
-              <button class="btn btn-primary" type="submit" @click="">发 布</button>
-            </div>
-          </form>
-        </template>
-        <template v-else>
-          <div class="text-center">您还没有权限创作文章哦！</div>
-        </template>
+          <div v-for="tag in tags" :key="tag.id" class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" :value="tag.id" :id="'tagCheckbox'+tag.id">
+            <label class="form-check-label" :for="'tagCheckbox'+tag.id">{{ tag.name }}</label>
+          </div>
+          <hr>
+          <div class="form-group">
+            <button type="button" class="btn btn-primary"><i class="fa fa-send mr-2"></i>立即发布</button>
+            <span class="mr-2 ml-2">or</span>
+            <button type="button" class="btn btn-secondary"><i class="fa fa-save mr-2"></i>保存草稿</button>
+          </div>
+        </form>
+        <div v-show="!canEdit" class="text-center">您还没有权限创作文章哦！</div>
       </div>
     </div>
   </div>
@@ -55,7 +51,12 @@ export default {
   name: 'ArticlCreate',
   data () {
     return {
-      tags: []
+      categories: [],
+      form: {
+        category_id: null,
+        is_draft: true, // 草稿
+        title: '',
+      }
     }
   },
   components: {
@@ -63,17 +64,35 @@ export default {
   computed: {
     canEdit () {
       return this.$user().is_admin
+    },
+    tags () {
+      if (!this.form.category_id) {
+        return []
+      }
+
+      let cTags = []
+
+      this.categories.forEach((category) => {
+        if (category.id === this.form.category_id) {
+          cTags = category.tags.data
+          return false
+        }
+      })
+
+      return cTags
     }
   },
   methods: {
-    getTags () {
-      this.$http.get('/tags')
+   getTags () {
+      this.$http.get('/categories?include=tags')
         .then(response => {
-          this.tags = response.data
+          this.categories = response.data
         })
     }
   },
   mounted () {
+    this.getTags()
+
     this.$nextTick(() => {
       const simplemde = new SimpleMDE({
         element: document.querySelector('#editor'),
@@ -89,8 +108,6 @@ export default {
         }
       })
     })
-
-    this.getTags()
   }
 }
 </script>

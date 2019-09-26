@@ -9,13 +9,13 @@
               <i class="fa fa-folder"></i> {{ article.category.name }}
             </router-link>
 
-            <span class="count_seperator">|</span>
+            <el-divider direction="vertical"></el-divider>
             <template v-for="(tag, index) in article.tags.data">
               <span><i class="fa fa-tag"></i> {{ tag.name }}</span>
               <span v-if="index != article.tags.data.length-1" class="count_seperator">/</span>
             </template>
 
-            <span class="count_seperator">|</span>
+            <el-divider direction="vertical"></el-divider>
 
             <span><i class="fa fa-clock-o"></i> {{ article.published_at_ago }}</span>
             <span class="count_seperator">/</span>
