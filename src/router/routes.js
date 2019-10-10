@@ -34,5 +34,11 @@ export default [
     path: '/articles/:articleId/show',
     name: 'articles.show',
     component: () => import('@/views/articles/Show')
+  },
+  {
+    path: '/articles/:articleId/edit',
+    name: 'articles.edit',
+    component: () => import('@/views/articles/Create'),
+    meta: { auth: true }
   }
 ]

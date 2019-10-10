@@ -22,6 +22,16 @@
             <span><i class="fa fa-eye"></i> 211</span>
             <span class="count_seperator">/</span>
             <span><i class="fa fa-heart"></i> 1</span>
+
+            <span v-if="canEdit" class="ml-3">
+              (
+              <router-link :to="{ name: 'articles.edit', params: { articleId: article.id }}">
+                <i class="fa fa-edit"></i> 编辑
+              </router-link>
+              <span class="count_seperator">|</span>
+              <span><i class="fa fa-trash"></i> 删除</span>
+              )
+            </span>
           </div>
         </div>
         <el-divider></el-divider>
@@ -35,6 +45,7 @@
 
 <script>
 import MarkdownBody from '@/components/MarkdownBody'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'ArticlShow',
@@ -46,6 +57,12 @@ export default {
   components: {
     MarkdownBody
   },
+  computed: {
+    ...mapGetters(['currentUser']), // 此处的 currentUser 方便直接在模版中使用，判断是不是管理员等
+    canEdit () {
+      return this.article.user_id === this.$user().id || this.$user().is_admin
+    }
+  },
   methods: {
     loadArticle () {
       this.$http
@@ -56,7 +73,7 @@ export default {
         })
         .catch(response => {
           if (response.status === 404) {
-            this.$message.error('该文章已被删除或锁定！')
+            this.$message.error('该文章不存在或已被删除！')
             setTimeout(() => {
               this.$router.go(-1)
             }, 1000)

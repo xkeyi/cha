@@ -3,7 +3,7 @@
     <div class="article-page">
       <h3 class="text-center" style="font-weight: 400;color: #636b6f;">
         <i class="fa fa-paint-brush"></i>
-        创作文章
+        {{ articleId ? '编辑文章' : '创作文章' }}
       </h3>
       <hr>
       <form v-show="canEdit">
@@ -28,13 +28,16 @@
           <label class="form-check-label" :for="'tagCheckbox'+tag.id">{{ tag.name }}</label>
         </div>
         <hr>
-        <div class="form-group">
-          <button type="button" class="btn btn-primary"  @click="submit(false)"><i class="fa fa-send mr-2"></i>立即发布</button>
+        <div class="form-group" v-if="articleId && articlePublished">
+          <button type="button" class="btn btn-primary" :disabled="!formReady" @click="submit(false)"><i class="fa fa-send mr-2"></i>保存</button>
+        </div>
+        <div class="form-group" v-else>
+          <button type="button" class="btn btn-primary" :disabled="!formReady" @click="submit(false)"><i class="fa fa-send mr-2"></i>立即发布</button>
           <span class="mr-2 ml-2">or</span>
           <button type="button" class="btn btn-secondary" :disabled="!formReady" @click="submit(true)"><i class="fa fa-save mr-2"></i>保存草稿</button>
         </div>
       </form>
-      <div v-show="!canEdit" class="text-center">您还没有权限创作文章哦！</div>
+      <div v-show="!canEdit" class="text-center mt-5" style="font-size: 20px;color:#606266;">您没有权限访问当前页面！</div>
     </div>
   </div>
 </template>
@@ -52,6 +55,9 @@ export default {
   name: 'ArticlCreate',
   data () {
     return {
+      articleId: undefined, // 文章ID
+      articleUserId: undefined, // 文章作者ID
+      articlePublished: false,
       categories: [],
       busing: false,
       form: {
@@ -70,9 +76,27 @@ export default {
   },
   components: {
   },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      // 确认渲染组件的对应路由时，设置 articleId
+      vm.setArticleId(vm.$route.params.articleId)
+    })
+  },
+  beforeRouteLeave(to, from, next) {
+    this.clearData()
+    next()
+  },
   watch: {
     categoryId () {
       this.form.tags = []
+    },
+    /**
+     * 我们可以通过监听 '$route' 来得知路由参数的变化，我们通常会在两个路由都渲染相同的组件时监听 '$route'，这是因为 Vue 会复用组件实例，以导致组件内的部分钩子不再被调用。举例来说，我们的『编辑文章』和 『创作文章』都使用 Create.vue 组件，当我们从『编辑文章』导航到『创作文章』时（在编辑文章页面点击创作文章按钮），beforeRouteEnter 就不会被调用，所以我们需要监听 '$route'，以响应路由参数的变化。
+     */
+    // 监听路由参数的变化
+    '$route'(to) {
+      // 设置 articleId
+      this.setArticleId(to.params.articleId)
     }
   },
   computed: {
@@ -80,6 +104,10 @@ export default {
       return this.form.category_id
     },
     canEdit () {
+      if (this.articleId) {
+        return this.$user().is_admin || this.$user().id === this.articleUserId
+      }
+
       return this.$user().is_admin
     },
     tags () {
@@ -110,6 +138,14 @@ export default {
     }
   },
   methods: {
+    setArticleId(articleId) {
+      // 设置当前实例的 articleId
+      this.articleId = articleId
+      if (this.articleId) {
+        // 加载文章内容
+        this.loadArticle(this.articleId)
+      }
+    },
     getTags () {
       this.busing = true
 
@@ -123,28 +159,61 @@ export default {
           this.busing = false
         })
     },
+    loadArticle (articleId) {
+      this.$http
+        .get(`/articles/${articleId}?include=category,tags,content`)
+        .then(response => {
+          this.articleUserId = response.user_id
+
+          if (response.published_at_ago) {
+            this.articlePublished = true
+          }
+
+          this.form.category_id = response.category_id
+          this.form.cover_image = response.cover_image
+          this.form.title = response.title
+
+          this.simplemde.value(response.content.markdown)
+
+          this.$nextTick(() => {
+            response.tags.data.forEach((item) => {
+              this.form.tags.push(item.id)
+            })
+          })
+        })
+    },
     submit (is_draft = true) {
       this.form.is_draft = is_draft
 
       this.busing = true
 
-      this.$http.post('/articles', this.form)
+      let promise = null
+
+      if (this.articleId) {
+        promise = this.$http.patch(`/articles/${this.articleId}`, this.form)
+      } else {
+        promise = this.$http.post('/articles', this.form)
+      }
+
+      promise
         .then(response => {
-          this.$message.success('发布/保存成功！')
+          this.$message.success('内容已发布（保存）成功！')
           this.$router.replace({
             name: 'articles.show',
             params: { articleId: response.id }
           })
 
-          // 清除编辑的内容
-          this.simplemde.value('')
-          // 清除编辑器自动保存的内容
-          this.simplemde.clearAutosavedValue()
+          this.clearData()
         })
         .finally(() => {
           this.busing = false
         })
-      console.log(this.form)
+    },
+    clearData () {
+      // 清除编辑的内容
+      this.simplemde.value('')
+      // 清除编辑器自动保存的内容
+      this.simplemde.clearAutosavedValue()
     }
   },
   mounted () {
