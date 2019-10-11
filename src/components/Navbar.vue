@@ -81,6 +81,7 @@ export default {
         center: true
       }).then(() => {
         this.logout()
+        this.$message('记得要回来哦~')
       }).catch(() => {
         // 取消
       });

@@ -29,7 +29,7 @@
                 <i class="fa fa-edit"></i> 编辑
               </router-link>
               <span class="count_seperator">|</span>
-              <span><i class="fa fa-trash"></i> 删除</span>
+              <span @click="handleDelete()" style="cursor:pointer;"><i class="fa fa-trash"></i> 删除</span>
               )
             </span>
           </div>
@@ -68,7 +68,6 @@ export default {
       this.$http
         .get(`/articles/${this.$route.params.articleId}?include=category,tags,content`)
         .then(response => {
-          console.log(response)
           this.article = response
         })
         .catch(response => {
@@ -79,6 +78,22 @@ export default {
             }, 1000)
           }
         })
+    },
+    handleDelete() {
+      this.$confirm('您确定要删除此文章吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'error',
+        center: true
+      }).then(() => {
+        this.$http.delete(`/articles/${this.article.id}`)
+        .then(() => {
+          this.$message.success('已删除！')
+          this.$router.go(-1)
+        })
+      }).catch(() => {
+        // 取消
+      });
     }
   },
   mounted () {

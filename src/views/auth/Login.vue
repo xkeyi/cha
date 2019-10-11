@@ -70,6 +70,7 @@ export default {
         await this.login(form_data)
 
         this.$message.success('欢迎回来~')
+        // 跳回首页
         this.$router.push({ name: 'home' })
       } catch (e) {
         if (e.status !== 422) {

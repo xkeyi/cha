@@ -133,7 +133,7 @@ export default {
         this.form.title.length >= 5 &&
         this.form.category_id > 0 &&
         this.form.content.markdown &&
-        this.form.content.markdown.length >= 30
+        this.form.content.markdown.length >= 20
       )
     }
   },
@@ -222,7 +222,7 @@ export default {
     this.$nextTick(() => {
       const simplemde = new SimpleMDE({
         element: document.querySelector('#editor'),
-        placeholder: '请使用 Markdown 格式书写 ;-)，代码片段黏贴时请注意使用高亮语法。',
+        placeholder: '请使用 Markdown 格式书写 ;-)，代码片段黏贴时请注意使用高亮语法。最少 20 个字符。',
         spellChecker: false, // 禁用拼写检查
         autoDownloadFontAwesome: false, // 不用自动下载 FontAwesome，因为我们刚好有使用 FontAwesome，所以不用自动下载
         autosave: { // 启用自动保存，uniqueId 是一个用于区别于其他站点的标识
