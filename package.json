@@ -16,7 +16,7 @@
     "font-awesome": "^4.7.0",
     "highlight.js": "^9.15.10",
     "iview": "^3.5.0-rc.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "localforage": "^1.7.3",
     "lodash": "^4.17.15",
     "prismjs": "^1.17.1",
